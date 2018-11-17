@@ -16,6 +16,7 @@ package automato;
 
 import conjunto.ConjuntoEstado;
 import conjunto.ConjuntoObject;
+import lexico.Token;
 
 public class Estado {
 	private String simbolo;
@@ -23,6 +24,8 @@ public class Estado {
 	
 	private ConjuntoEstado conjuntoEpsilonFecho;
 	private ConjuntoObject<Transicao> transicoes;
+	
+	private Token token;
 	
 	public Estado() {
 		this.construir(this.toString());
@@ -34,6 +37,7 @@ public class Estado {
 		this.simbolo = simbolo;
 		this.isInicial = false;
 		this.isFinal = false;
+		this.token = null;
 		
 		this.transicoes = new ConjuntoObject<Transicao>();
 		
@@ -68,6 +72,9 @@ public class Estado {
 	public void setFinal(boolean isFinal) {
 		this.isFinal = isFinal;
 	}
+	public void setToken(Token token) {
+		this.token = token;
+	}
 	
 	// Metodos Getters
 	public String getSimbolo() {
@@ -78,6 +85,9 @@ public class Estado {
 	}
 	public boolean isFinal() {
 		return isFinal;
+	}
+	public Token getToken() {
+		return this.token;
 	}
 	public ConjuntoObject<Transicao> getConjuntoTransicao() {
 		return transicoes;
@@ -122,18 +132,18 @@ public class Estado {
 	// Verifica se uma dada entrada eh reconhecida pelo estado
 	// Nao faz parte do trabalho e implementacao de ultima hora e duvidosa,
 	// portanto nao foi add na interface
-	public boolean reconhece(String entrada) {
+	public Token reconhece(String entrada) {
 		if (entrada == null) {
 			if (this.isFinal) {
-				return true;
+				return this.token;
 			}
-			return false;
+			return null;
 		}
 		if (entrada.equals("")) {
 			if (this.isFinal) {
-				return true;
+				return this.token;
 			}
-			return false;
+			return null;
 		}
 		
 		for (int c = 0; c < this.getConjuntoTransicao().size(); c++) {
@@ -150,12 +160,15 @@ public class Estado {
 				continue;
 			}
 			
-			if (estadoDestino.reconhece(entrada.substring(1))) {
-				return true;
+			Token tokenReconhecido;
+			tokenReconhecido = estadoDestino.reconhece(entrada.substring(1));
+			
+			if (tokenReconhecido != null) {
+				return tokenReconhecido;
 			}
 		}
 		
-		return false;
+		return null;
 	}
 	// Verifica a equivalencia entre dois estados
 	@Override

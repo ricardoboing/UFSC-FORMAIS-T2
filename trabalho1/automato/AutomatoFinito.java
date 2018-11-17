@@ -21,6 +21,7 @@ import conjunto.ConjuntoEstado;
 import conjunto.ConjuntoObject;
 import expressao.ExpressaoRegular;
 import expressao.NoDeSimone;
+import lexico.Token;
 import util.Linguagem;
 import util.LinguagemGerador;
 
@@ -51,6 +52,9 @@ public class AutomatoFinito implements Linguagem {
 		this.conjuntoEstado = new ConjuntoEstado();
 		this.conjuntoAlfabeto = new ConjuntoAlfabeto();
 		this.conjuntoTransicao = new ConjuntoObject<Transicao>();
+	}
+	public AutomatoFinito(LinguagemGerador linguagemGerador) {
+		this("", linguagemGerador);
 	}
 	public AutomatoFinito(String nome, LinguagemGerador linguagemGerador) {
 		this(nome);
@@ -306,6 +310,7 @@ public class AutomatoFinito implements Linguagem {
 			if (estadoOriginal.isFinal()) {
 				estadoClone.setFinal(true);
 			}
+			estadoClone.setToken( estadoOriginal.getToken() );
 			
 			automatoClone.addEstado(estadoClone);
 		}
@@ -484,27 +489,17 @@ public class AutomatoFinito implements Linguagem {
 	// Verifica se uma dada entrada eh reconhecida pelo automato
 	// Nao faz parte do trabalho e implementacao de ultima hora e duvidosa,
 	// portanto nao foi add na interface
-	public boolean reconhecerEntrada(String entrada) {
-		boolean possuiEstadoFinal;
-		possuiEstadoFinal = (this.getConjuntoEstadoFinal().size() != 0);
-		
-		if (entrada == null && (this.estadoInicial.isFinal() || !possuiEstadoFinal)) {
-			return true;
-		}
-		if (entrada.equals("") && (this.estadoInicial.isFinal() || !possuiEstadoFinal)) {
-			return true;
-		}
-		
-		for (int c = 0; c < entrada.length(); c++) {
-			if (!this.conjuntoAlfabeto.contains(entrada.charAt(c))) {
-				return false;
+	public Token reconhecerLexema(String lexema) {
+		// Se algum dos simbolos nao existir no alfabeto entao entrada invalida
+		for (int c = 0; c < lexema.length(); c++) {
+			if (!this.conjuntoAlfabeto.contains(lexema.charAt(c))) {
+				return null;
 			}
 		}
 		
-		if (this.estadoInicial.reconhece(entrada)) {
-			return true;
-		}
+		Token tokenReconhecido;
+		tokenReconhecido = this.estadoInicial.reconhece(lexema);
 		
-		return false;
+		return tokenReconhecido;
 	}
 }

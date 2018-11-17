@@ -18,6 +18,7 @@ import conjunto.ArrayConjuntoEstado;
 import conjunto.ConjuntoAlfabeto;
 import conjunto.ConjuntoEstado;
 import conjunto.ConjuntoObject;
+import lexico.Token;
 
 public class OperarAutomato {
 	public static void gerarConjuntoEpsilonFecho(AutomatoFinito automatoAFND) {
@@ -152,6 +153,13 @@ public class OperarAutomato {
 					// EstadoAFD eh final se algum estadoAFND que o gerou for final
 					if (estadoAFND.isFinal()) {
 						estadoAFD.setFinal(true);
+						
+						Token tokenAFND;
+						tokenAFND = estadoAFND.getToken();
+						
+						if (tokenAFND != null) {
+							estadoAFD.setToken(tokenAFND);
+						}
 					}
 					
 					ConjuntoObject<Transicao> conjuntoTransicaoEstadoAFND;

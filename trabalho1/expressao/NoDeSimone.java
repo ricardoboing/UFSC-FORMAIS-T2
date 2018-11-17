@@ -242,7 +242,7 @@ public class NoDeSimone {
 		this.gerarArvoreSintaticaSemCostura();
 		this.criarCostura(arrayPrecedentes, arrayVisitados);
 		
-		System.out.println("Preced: "+arrayPrecedentes.size());
+		//System.out.println("Preced: "+arrayPrecedentes.size());
 	}
 	private void criarCostura(ArrayList<NoDeSimone> arrayPrecedentes, ArrayList<NoDeSimone> arrayVisitados) {
 		if (arrayVisitados.contains(this) || this.nodoFimDaArvore) {
@@ -259,7 +259,7 @@ public class NoDeSimone {
 				arrayPrecedentes.add(new NoDeSimone("#", true));
 			}
 			
-			System.out.println(simbolo+" "+arrayPrecedentes.get(arrayPrecedentes.size()-1).getSimbolo());
+			//System.out.println(simbolo+" "+arrayPrecedentes.get(arrayPrecedentes.size()-1).getSimbolo());
 			this.noFilhoDireito = arrayPrecedentes.remove(arrayPrecedentes.size()-1);
 		}
 		if (simbolo == '*' || simbolo == '.' || simbolo == '|' || simbolo == '?') {
