@@ -1,1 +1,3 @@
 Simbolo ":" invalido. Linha 5.
+Simbolo "0oing" invalido. Linha 8.
+Simbolo "$oi" invalido. Linha 14.
