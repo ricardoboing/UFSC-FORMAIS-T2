@@ -109,6 +109,7 @@ public class TabelaDeSimbolos {
 			tabela += this.gerarLinha(c, lexema, token, valor, sizeMaxLexema, sizeMaxToken, sizeMaxValor);
 		}
 		
+		System.out.println(tabela);
 		Arquivo.escrever("tabela.txt", tabela);
 	}
 	private String gerarLinha(int c, String lexema, String token, String valor, int sizeLexema, int sizeToken, int sizeValor) {

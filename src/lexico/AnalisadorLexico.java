@@ -158,6 +158,7 @@ public class AnalisadorLexico {
 	}
 	public void gerarLogs() {
 		Arquivo.escrever("errosLexicos.txt", errosLexicos);
+		System.out.println("\n----------------\n");
 		this.tabelaDeSimbolos.escreverTabela();
 	}
 	private String proximoLexemaBuffer() {
