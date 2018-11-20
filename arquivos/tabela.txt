@@ -1,40 +1,43 @@
-| Indice | Lexema     | Token       | Valor |
-| 000000 | basic      | basic       |       |
-| 000001 | while      | while       |       |
-| 000002 | break      | break       |       |
-| 000003 | false      | false       |       |
-| 000004 | true       | true        |       |
-| 000005 | else       | else        |       |
-| 000006 | then       | then        |       |
-| 000007 | real       | real        |       |
-| 000008 | do         | do          |       |
-| 000009 | if         | if          |       |
-| 000010 | <          | relop       | LT    |
-| 000011 | >          | relop       | GT    |
-| 000012 | ==         | relop       | EQ    |
-| 000013 | !=         | relop       | NE    |
-| 000014 | <=         | relop       | LE    |
-| 000015 | >=         | relop       | GE    |
-| 000016 | =          | eq          |       |
-| 000017 | *          | op          |       |
-| 000018 | +          | op          |       |
-| 000019 | -          | op          |       |
-| 000020 | /          | op          |       |
-| 000021 | ||         | logical     | OR    |
-| 000022 | &&         | logical     | AND   |
-| 000023 | ;          | semicolon   |       |
-| 000024 | {          | key         | OPEN  |
-| 000025 | }          | key         | CLOSE |
-| 000026 | (          | parentheses | OPEN  |
-| 000027 | )          | parentheses | CLOSE |
-| 000028 | [          | brackets    | OPEN  |
-| 000029 | ]          | brackets    | CLOSE |
-| 000030 | ricardo    | id          | -     |
-| 000031 | 0000000000 | num         | -     |
-| 000032 | 0,0        | num         | -     |
-| 000033 | b0ing      | id          | -     |
-| 000034 | boing      | id          | -     |
-| 000035 | r1card0    | id          | -     |
-| 000036 | oi         | id          | -     |
-| 000037 | hi         | id          | -     |
-| 000038 | hello      | id          | -     |
+| Indice | Lexema     | Token       | Valor | Linha |
+| 000000 | basic      | basic       | -     |       |
+| 000001 | while      | while       | -     | 2     |
+| 000002 | break      | break       | -     |       |
+| 000003 | false      | false       | -     | 2     |
+| 000004 | true       | true        | -     |       |
+| 000005 | else       | else        | -     |       |
+| 000006 | then       | then        | -     |       |
+| 000007 | real       | real        | -     |       |
+| 000008 | do         | do          | -     |       |
+| 000009 | if         | if          | -     |       |
+| 000010 | <          | relop       | LT    |       |
+| 000011 | >          | relop       | GT    |       |
+| 000012 | ==         | relop       | EQ    |       |
+| 000013 | !=         | relop       | NE    |       |
+| 000014 | <=         | relop       | LE    |       |
+| 000015 | >=         | relop       | GE    |       |
+| 000016 | !          | not         | -     |       |
+| 000017 | =          | assign      | -     |       |
+| 000018 | *          | op          | MULT  |       |
+| 000019 | +          | op          | ADD   |       |
+| 000020 | -          | op          | SUB   | 15    |
+| 000021 | /          | op          | DIV   | 15    |
+| 000022 | ||         | cond        | OR    | 2     |
+| 000023 | &&         | cond        | AND   |       |
+| 000024 | ;          | semicolon   | -     |       |
+| 000025 | {          | key         | OPEN  | 1, 2  |
+| 000026 | }          | key         | CLOSE | 4, 5  |
+| 000027 | (          | parentheses | OPEN  | 2, 2  |
+| 000028 | )          | parentheses | CLOSE | 2, 2  |
+| 000029 | [          | acess       | OPEN  |       |
+| 000030 | ]          | acess       | CLOSE |       |
+| 000031 | ricardo    | id          | -     | 2, 10 |
+| 000032 | 0000000000 | num         | -     | 2     |
+| 000033 | 0,0        | num         | -     | 2     |
+| 000034 | b0ing      | id          | -     | 2, 7  |
+| 000035 | boing      | id          | -     | 6     |
+| 000036 | r1card0    | id          | -     | 9     |
+| 000037 | oi         | id          | -     | 11    |
+| 000038 | hi         | id          | -     | 12    |
+| 000039 | hello      | id          | -     | 13    |
+| 000040 | h          | id          | -     | 15    |
+| 000041 | jorge      | id          | -     | 16    |

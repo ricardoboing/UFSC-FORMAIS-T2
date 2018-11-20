@@ -1,3 +1,12 @@
-Simbolo ":" invalido. Linha 5.
-Simbolo "0oing" invalido. Linha 8.
-Simbolo "$oi" invalido. Linha 14.
+
+arquivos/programaFonte.jerusa:2: "    while((0true || ricardo 0000000000 0,0 b0ing false)) {"
+erro: simbolo "0true" invalido.
+
+arquivos/programaFonte.jerusa:5: "}:"
+erro: simbolo ":" invalido.
+
+arquivos/programaFonte.jerusa:8: "0oing"
+erro: simbolo "0oing" invalido.
+
+arquivos/programaFonte.jerusa:14: "$oi"
+erro: simbolo "$oi" invalido.

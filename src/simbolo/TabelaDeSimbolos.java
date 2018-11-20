@@ -13,8 +13,10 @@ public class TabelaDeSimbolos {
 	
 	public int addSimbolo(String lexema, String token, String valor) {
 		this.arrayLinhaTabela.add( new LinhaTabela(lexema, token, valor) );
-		
 		return this.arrayLinhaTabela.size()-1;
+	}
+	public void addLinhaSimbolo(int indice, int linha) {
+		this.arrayLinhaTabela.get(indice).addLinha(linha);
 	}
 	
 	public String getLexema(int indice) {
@@ -66,21 +68,23 @@ public class TabelaDeSimbolos {
 	}
 	
 	
-	
-	public void escreverTabela() {
-		int sizeMaxLexema, sizeMaxToken, sizeMaxValor;
+	// Metodo pra desenhar bonitinha a tabela
+	public String gerarLog() {
+		int sizeMaxLexema, sizeMaxToken, sizeMaxValor, sizeIndiceLinha;
 		sizeMaxLexema = 6;
 		sizeMaxToken = 5;
 		sizeMaxValor = 5;
+		sizeIndiceLinha = 5;
 		
 		for (int c = 0; c < this.arrayLinhaTabela.size(); c++) {
 			LinhaTabela linhaTabela;
 			linhaTabela = this.arrayLinhaTabela.get(c);
 			
-			String lexema, token, valor;
+			String lexema, token, valor, indiceLinha;
 			lexema = linhaTabela.getLexema();
 			token = linhaTabela.getToken();
 			valor = linhaTabela.getValor();
+			indiceLinha = linhaTabela.getIndicesLinhaToString();
 			
 			if (lexema.length() > sizeMaxLexema) {
 				sizeMaxLexema = lexema.length();
@@ -91,28 +95,34 @@ public class TabelaDeSimbolos {
 			if (valor.length() > sizeMaxValor) {
 				sizeMaxValor = valor.length();
 			}
+			if (indiceLinha.length() > sizeIndiceLinha) {
+				sizeIndiceLinha = indiceLinha.length();
+			}
 		}
 		
 		String tabela;
 		tabela  = "";
-		tabela += this.gerarLinha(-1, "Lexema", "Token", "Valor", sizeMaxLexema, sizeMaxToken, sizeMaxValor);
+		tabela += this.gerarLogLinha(-1, "Lexema", "Token", "Valor", "Linha", sizeMaxLexema, sizeMaxToken, sizeMaxValor, sizeIndiceLinha);
 		
 		for (int c = 0; c < this.arrayLinhaTabela.size(); c++) {
 			LinhaTabela linhaTabela;
 			linhaTabela = this.arrayLinhaTabela.get(c);
 			
-			String lexema, token, valor;
+			String lexema, token, valor, indiceLinha;
 			lexema = linhaTabela.getLexema();
 			token = linhaTabela.getToken();
 			valor = linhaTabela.getValor();
+			indiceLinha = linhaTabela.getIndicesLinhaToString();
 			
-			tabela += this.gerarLinha(c, lexema, token, valor, sizeMaxLexema, sizeMaxToken, sizeMaxValor);
+			tabela += this.gerarLogLinha(c, lexema, token, valor, indiceLinha, sizeMaxLexema, sizeMaxToken, sizeMaxValor, sizeIndiceLinha);
 		}
 		
-		System.out.println(tabela);
 		Arquivo.escrever("tabela.txt", tabela);
+		
+		return tabela;
 	}
-	private String gerarLinha(int c, String lexema, String token, String valor, int sizeLexema, int sizeToken, int sizeValor) {
+	// Metodo pra desenhar bonitinha uma linha da tabela
+	private String gerarLogLinha(int c, String lexema, String token, String valor, String indiceLinha, int sizeLexema, int sizeToken, int sizeValor, int sizeIndiceLinha) {
 		String espacoVazio;
 		espacoVazio = "                                                  ";
 		
@@ -140,7 +150,9 @@ public class TabelaDeSimbolos {
 		
 		linha += lexema+(espacoVazio.substring(0, sizeLexema-lexema.length()))+" | ";
 		linha += token+(espacoVazio.substring(0, sizeToken-token.length()))+" | ";
-		linha += valor+(espacoVazio.substring(0, sizeValor-valor.length()))+" |";
+		linha += valor+(espacoVazio.substring(0, sizeValor-valor.length()))+" | ";
+		linha += indiceLinha+(espacoVazio.substring(0, sizeIndiceLinha-indiceLinha.length()))+" |";
+		
 		
 		return linha+"\n";
 	}

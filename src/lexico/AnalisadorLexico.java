@@ -9,40 +9,47 @@ import simbolo.TabelaDeSimbolos;
 import util.Arquivo;
 
 public class AnalisadorLexico {
+	private TabelaDeTratamentoDeErro tabelaDeTratamentoErro;
 	private TabelaDeSimbolos tabelaDeSimbolos;
 	private AutomatoFinito automatoUniao;
-	
-	private String errosLexicos;
 	
 	private String[] buffer;
 	private int contadorBuffer;
 	private int contadorLinha;
 	
-	public AnalisadorLexico(String programaFonte) {
-		programaFonte = this.lerProgramaFonte(programaFonte);
+	public AnalisadorLexico(String urlCodigoFonte) {
+		String programaFonte;
+		programaFonte = this.lerProgramaFonte(urlCodigoFonte);
 		
 		this.buffer = programaFonte.split(" ");
 		this.contadorBuffer = 0;
 		this.contadorLinha = 1;
-		this.errosLexicos = "";
 		
 		this.tabelaDeSimbolos = new TabelaDeSimbolos();
+		tabelaDeTratamentoErro = new TabelaDeTratamentoDeErro(urlCodigoFonte);
 		
 		this.loadTabelaDeSimbolos();
 		this.gerarAutomato();
 	}
 	
+	/* Realiza a leitura do arquivo e, para cada simbolo reservado
+	 * eh add um espaco em branco antes e depois do simbolo
+	 */
 	private String lerProgramaFonte(String urlCodigoFonte) {
 		String[] simbolosReservados;
 		simbolosReservados = new String[] {
 			"<=", "==", "!=", ">=", "&&", "\\|\\|", "\n",
-			"\\(", "\\)", "\\[", "\\]", "\\{", "\\}", ";", "=",
-			"\\*", "\\+", "-", "/", "<", ">", "!"
+			"\\(", "\\)", "\\[", "\\]", "\\{", "\\}", ";",
+			"=", "\\*", "\\+", "-", "/", "<", ">", "!"
 		};
 		
+		// Le o arquivo codigo fonte
 		String programaFonte;
 		programaFonte = Arquivo.ler(urlCodigoFonte);
 		
+		/* Para cada simbolo reservado eh feito a substituicao do simbolo
+		 * por ele mesmo, porem com um espaço em branco antes e depois
+		 */
 		for (int c = 0; c < simbolosReservados.length; c++) {
 			String simboloReservado;
 			simboloReservado = simbolosReservados[c];
@@ -52,17 +59,20 @@ public class AnalisadorLexico {
 		
 		return programaFonte;
 	}
+	/* Add todos os simbolos e palavras reservadas na tabela
+	 * de simbolos
+	 */
 	private void loadTabelaDeSimbolos() {
-		this.tabelaDeSimbolos.addSimbolo("basic", "basic", "");
-		this.tabelaDeSimbolos.addSimbolo("while", "while", "");
-		this.tabelaDeSimbolos.addSimbolo("break", "break", "");
-		this.tabelaDeSimbolos.addSimbolo("false", "false", "");
-		this.tabelaDeSimbolos.addSimbolo("true", "true", "");
-		this.tabelaDeSimbolos.addSimbolo("else", "else", "");
-		this.tabelaDeSimbolos.addSimbolo("then", "then", "");
-		this.tabelaDeSimbolos.addSimbolo("real", "real", "");
-		this.tabelaDeSimbolos.addSimbolo("do", "do", "");
-		this.tabelaDeSimbolos.addSimbolo("if", "if", "");
+		this.tabelaDeSimbolos.addSimbolo("basic", "basic", "-");
+		this.tabelaDeSimbolos.addSimbolo("while", "while", "-");
+		this.tabelaDeSimbolos.addSimbolo("break", "break", "-");
+		this.tabelaDeSimbolos.addSimbolo("false", "false", "-");
+		this.tabelaDeSimbolos.addSimbolo("true", "true", "-");
+		this.tabelaDeSimbolos.addSimbolo("else", "else", "-");
+		this.tabelaDeSimbolos.addSimbolo("then", "then", "-");
+		this.tabelaDeSimbolos.addSimbolo("real", "real", "-");
+		this.tabelaDeSimbolos.addSimbolo("do", "do", "-");
+		this.tabelaDeSimbolos.addSimbolo("if", "if", "-");
 		
 		this.tabelaDeSimbolos.addSimbolo("<", "relop", "LT");
 		this.tabelaDeSimbolos.addSimbolo(">", "relop", "GT");
@@ -71,23 +81,28 @@ public class AnalisadorLexico {
 		this.tabelaDeSimbolos.addSimbolo("<=", "relop", "LE");
 		this.tabelaDeSimbolos.addSimbolo(">=", "relop", "GE");
 		
-		this.tabelaDeSimbolos.addSimbolo("=", "eq", "");
-		this.tabelaDeSimbolos.addSimbolo("*", "op", "");
-		this.tabelaDeSimbolos.addSimbolo("+", "op", "");
-		this.tabelaDeSimbolos.addSimbolo("-", "op", "");
-		this.tabelaDeSimbolos.addSimbolo("/", "op", "");
+		this.tabelaDeSimbolos.addSimbolo("!", "not", "-");
+		this.tabelaDeSimbolos.addSimbolo("=", "assign", "-");
+		this.tabelaDeSimbolos.addSimbolo("*", "op", "MULT");
+		this.tabelaDeSimbolos.addSimbolo("+", "op", "ADD");
+		this.tabelaDeSimbolos.addSimbolo("-", "op", "SUB");
+		this.tabelaDeSimbolos.addSimbolo("/", "op", "DIV");
 		
-		this.tabelaDeSimbolos.addSimbolo("||", "logical", "OR");
-		this.tabelaDeSimbolos.addSimbolo("&&", "logical", "AND");
-		this.tabelaDeSimbolos.addSimbolo(";", "semicolon", "");
+		this.tabelaDeSimbolos.addSimbolo("||", "cond", "OR");
+		this.tabelaDeSimbolos.addSimbolo("&&", "cond", "AND");
+		this.tabelaDeSimbolos.addSimbolo(";", "semicolon", "-");
 		this.tabelaDeSimbolos.addSimbolo("{", "key", "OPEN");
 		this.tabelaDeSimbolos.addSimbolo("}", "key", "CLOSE");
 		this.tabelaDeSimbolos.addSimbolo("(", "parentheses", "OPEN");
 		this.tabelaDeSimbolos.addSimbolo(")", "parentheses", "CLOSE");
-		this.tabelaDeSimbolos.addSimbolo("[", "brackets", "OPEN");
-		this.tabelaDeSimbolos.addSimbolo("]", "brackets", "CLOSE");
+		this.tabelaDeSimbolos.addSimbolo("[", "acess", "OPEN");
+		this.tabelaDeSimbolos.addSimbolo("]", "acess", "CLOSE");
 	}
+	/* Para cada token eh gerado um automato que o reconhece.
+	 * Um automato uniao eh criado e determinizado
+	 */
 	private void gerarAutomato() {
+		// Os automatos de cada token sao criados internamente pela classe Token
 		Token tokenID, tokenNUM;
 		tokenID  = new Token("id",  ExpressaoRegular.LETTER+" ( "+ExpressaoRegular.LETTER+" | "+ExpressaoRegular.DIGIT+" )* ");
 		tokenNUM = new Token("num", ExpressaoRegular.DIGIT+ExpressaoRegular.DIGIT+"* ,* "+ExpressaoRegular.DIGIT+"*");
@@ -97,6 +112,7 @@ public class AnalisadorLexico {
 		listaDeToken.add(tokenID);
 		listaDeToken.add(tokenNUM);
 		
+		// Obtem o primeiro automato e faz a uniao com os demais
 		this.automatoUniao = listaDeToken.get(0).getPadrao();
 		
 		for (int c = 1; c < listaDeToken.size(); c++) {
@@ -109,9 +125,9 @@ public class AnalisadorLexico {
 		this.automatoUniao = OperarAutomato.determinizar(automatoUniao);
 	}
 	
-	public String getProximoToken() throws Exception {
+	public String getToken() throws Exception {
 		// Nao possui mais simbolos no buffer
-		if (!this.proximoToken()) {
+		if (!this.existeProximoToken()) {
 			return null;
 		}
 		
@@ -120,12 +136,12 @@ public class AnalisadorLexico {
 		
 		// Espaco vazio
 		if (lexema.equals("")) {
-			return this.getProximoToken();
+			return this.getToken();
 		}
 		// Quebra de linha
 		if (lexema.equals("\n")) {
 			this.contadorLinha++;
-			return this.getProximoToken();
+			return this.getToken();
 		}
 		
 		int indiceToken;
@@ -136,31 +152,29 @@ public class AnalisadorLexico {
 			String token;
 			token = this.tabelaDeSimbolos.getToken(indiceToken);
 			
+			this.tabelaDeSimbolos.addLinhaSimbolo(indiceToken, this.contadorLinha);
 			return this.formatarToken(token, indiceToken);
 		}
 		
+		// Tenta reconhecer um lexema
 		Token token;
 		token = this.automatoUniao.reconhecerLexema(lexema);
 		
 		// Simbolo invalido
 		if (token == null) {
-			this.lexemaInvalido(lexema, this.contadorLinha);
+			String erro;
+			erro = this.tabelaDeTratamentoErro.erroLexico(lexema, this.contadorLinha);
+			
+			throw new Exception(erro);
 		}
 		
 		int indice;
 		indice = this.tabelaDeSimbolos.addSimbolo(lexema, token.getNome(), token.getValor());
+		this.tabelaDeSimbolos.addLinhaSimbolo(indice, this.contadorLinha);
 		
 		return this.formatarToken(token.getNome(), indice);
 	}
 	
-	public boolean proximoToken() {
-		return (this.contadorBuffer < this.buffer.length);
-	}
-	public void gerarLogs() {
-		Arquivo.escrever("errosLexicos.txt", errosLexicos);
-		System.out.println("\n----------------\n");
-		this.tabelaDeSimbolos.escreverTabela();
-	}
 	private String proximoLexemaBuffer() {
 		String lexema;
 		lexema = this.buffer[this.contadorBuffer];
@@ -169,15 +183,13 @@ public class AnalisadorLexico {
 		
 		return lexema;
 	}
+	public boolean existeProximoToken() {
+		return (this.contadorBuffer < this.buffer.length);
+	}
+	public String gerarLogs() {
+		return this.tabelaDeSimbolos.gerarLog();
+	}
 	private String formatarToken(String token, int indice) {
 		return "["+token+","+indice+"]";
-	}
-	private void lexemaInvalido(String lexema, int contadorLinha) throws Exception {
-		String erro;
-		erro = "Simbolo \""+lexema+"\" invalido. Linha "+contadorLinha+".";
-		
-		this.errosLexicos += erro+"\n";
-		
-		throw new Exception(erro);
 	}
 }
