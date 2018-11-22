@@ -1,9 +1,23 @@
 import lexico.AnalisadorLexico;
 
+/*
+ *  Trabalho II: Analisador Lexico
+ *  
+ *  Departamento de Informatica e Estatistica – Universidade Federal de Santa Catarina (UFSC)
+ *  Campus Reitor Joao David Ferreira Lima, 88.040-900 – Florianopolis – SC – Brasil
+ *  
+ *  Alceu Ramos Conceição Junior
+ *  Bruno Gilmar Honnef
+ *  Pedro Alexandre Barradas da Corte
+ *  Ricardo do Nascimento Boing
+ *  
+ *  21 de novembro de 2018
+ */
+
 public class Main {
 	public static void main(String[] args) {
 		String urlCodigoFonte;
-		urlCodigoFonte = "arquivos/programaFonte.jerusa";
+		urlCodigoFonte = "arquivos/programaFonte.fonte";
 		
 		boolean on;
 		on = false;

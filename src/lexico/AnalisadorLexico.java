@@ -8,6 +8,20 @@ import expressao.ExpressaoRegular;
 import simbolo.TabelaDeSimbolos;
 import util.Arquivo;
 
+/*
+ *  Trabalho II: Analisador Lexico
+ *  
+ *  Departamento de Informatica e Estatistica – Universidade Federal de Santa Catarina (UFSC)
+ *  Campus Reitor Joao David Ferreira Lima, 88.040-900 – Florianopolis – SC – Brasil
+ *  
+ *  Alceu Ramos Conceição Junior
+ *  Bruno Gilmar Honnef
+ *  Pedro Alexandre Barradas da Corte
+ *  Ricardo do Nascimento Boing
+ *  
+ *  21 de novembro de 2018
+ */
+
 public class AnalisadorLexico {
 	private TabelaDeTratamentoDeErro tabelaDeTratamentoErro;
 	private TabelaDeSimbolos tabelaDeSimbolos;
@@ -26,10 +40,17 @@ public class AnalisadorLexico {
 		this.contadorLinha = 1;
 		
 		this.tabelaDeSimbolos = new TabelaDeSimbolos();
-		tabelaDeTratamentoErro = new TabelaDeTratamentoDeErro(urlCodigoFonte);
+		this.tabelaDeTratamentoErro = new TabelaDeTratamentoDeErro(urlCodigoFonte);
 		
 		this.loadTabelaDeSimbolos();
 		this.gerarAutomato();
+	}
+	
+	public TabelaDeTratamentoDeErro getTabelaDeTratamentoDeErro() {
+		return this.tabelaDeTratamentoErro;
+	}
+	public TabelaDeSimbolos getTabelaDeSimbolos() {
+		return this.tabelaDeSimbolos;
 	}
 	
 	/* Realiza a leitura do arquivo e, para cada simbolo reservado

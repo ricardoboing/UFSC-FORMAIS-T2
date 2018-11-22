@@ -2,6 +2,20 @@ package lexico;
 
 import util.Arquivo;
 
+/*
+ *  Trabalho II: Analisador Lexico
+ *  
+ *  Departamento de Informatica e Estatistica – Universidade Federal de Santa Catarina (UFSC)
+ *  Campus Reitor Joao David Ferreira Lima, 88.040-900 – Florianopolis – SC – Brasil
+ *  
+ *  Alceu Ramos Conceição Junior
+ *  Bruno Gilmar Honnef
+ *  Pedro Alexandre Barradas da Corte
+ *  Ricardo do Nascimento Boing
+ *  
+ *  21 de novembro de 2018
+ */
+
 public class TabelaDeTratamentoDeErro {
 	private String[] programaFonte;
 	private String url;
